@@ -4,23 +4,23 @@ using namespace std;
 
 int main()
 {
-	int T;
+	long int T;
 	cin>> T;
-	for (int s = 0; s < T; ++s)
+	for (long int s = 0; s < T; ++s)
 	{
-		int N = 0;	
+		long int N = 0;	
 		cin>>N;
 		if(N == 0)
 		{
 			cout<<"Case "<<s+1<<": "<<0<<"\n";
 			continue;
 		}
-		vector<int> arr(N);
-		for (int i = 0; i < N; ++i)
+		vector<long int> arr(N);
+		for (long int i = 0; i < N; ++i)
 			cin>>arr[i];
-		vector<int> ans(N);
-		vector<int> filled(N,0);
-		for (int i = 0; i < N; ++i)
+		vector<long int> ans(N);
+		vector<long int> filled(N,0);
+		for (long int i = 0; i < N; ++i)
 		{
 			if (i == 0)
 			{
@@ -48,8 +48,8 @@ int main()
 				}
 				else
 				{
-					int res1 = arr[i] + ans[i-2];
-					int res2 = ans[i-1];
+					long int res1 = arr[i] + ans[i-2];
+					long int res2 = ans[i-1];
 					if(res1 >= res2)
 					{
 						ans[i] = res1;
