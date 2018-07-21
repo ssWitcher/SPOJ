@@ -33,43 +33,61 @@ int main()
 		if(count == 1)
 			toStartNodes.push_back(i);
 	}
+	cout<<"I am here\n";
 	int len = numeric_limits<int>::min();
-
+	cout<<"The value of length is : "<<len<<"\n";
 	for(int i = 0; i < toStartNodes.size(); i++)
 	{
-		
-		int flag = 0;
-		cout<<"DEBUG 1\n";
-		S.push(toStartNodes[i]);
-		visited[toStartNodes[i]] = 1;
-		while(!S.empty())
+		if(visited[toStartNodes[i]] == 0)
 		{
-			cout<<"DEBUG 2\n";
-			vector<int> arr(N+1);
-			arr[toStartNodes[i]] = 0;
-			for (int j = 1; j <= N; ++j)
+			int flag = 0;
+			cout<<"DEBUG 1\n";
+			cout<<"Printing the value of toStartNodes : ";
+			for (int l = 0; l < toStartNodes.size(); ++l)
 			{
-				if(adj[S.top()][j] == 1 and visited[j] == 0)
-				{
-					visited[j] = 1;
-					cout<<"DEBUGGER"<<"\n";
-					arr[j] = arr[S.top()] + 1;
-					S.push(j);
-				}
-				else
-				{
-					S.pop();
-				}
+				cout<<toStartNodes[l]<<" ";
 			}
-			int res = numeric_limits<int>::min();
-			for (int k = 1; k <= N; ++k)
+			cout<<"\n";
+			S.push(toStartNodes[i]);
+			visited[toStartNodes[i]] = 1;
+			cout<<"Reached here\n";
+			while(!S.empty())
 			{
-				if ( res <= arr[k])
-					res = arr[k];
-			}
-			if( len <= res )
-			{
-				len = res;
+				cout<<"DEBUG 2\n";
+				cout<<"THe value of toStartNodes[i] is : "<<toStartNodes[i]<<"\n";
+				int *arr = new int[N+1];
+				for(int h=0;h<=N;h++)
+				{
+					arr[h] = -1;
+				}
+				cout<<"Do reach here ?"<<"\n";
+				arr[toStartNodes[i]] = 0;
+				cout<<"***********************************Reached here too********************************"<<9<<"\n";
+				for (int j = 1; j <= N; ++j)
+				{
+					cout<<"Able to make it till here";
+					if(adj[S.top()][j] == 1 and visited[j] == 0)
+					{
+						visited[j] = 1;
+						cout<<"DEBUGGER"<<"\n";
+						arr[j] = arr[S.top()] + 1;
+						S.push(j);
+					}
+					else
+					{
+						S.pop();
+					}
+				}
+				int res = numeric_limits<int>::min();
+				for (int k = 1; k <= N; ++k)
+				{
+					if ( res <= arr[k])
+						res = arr[k];
+				}
+				if( len <= res )
+				{
+					len = res;
+				}
 			}
 		}
 	}
