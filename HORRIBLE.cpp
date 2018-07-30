@@ -7,35 +7,30 @@ long long N,C;
 
 void updateTree(long long node, long long a, long long b, long long i, long long j, long long value, vector<long long > &segTree, vector<long long > &lazyTree )
 {
-	if( a == i && b == j)
-	{
-		if(lazyTree[node] == 0)
-		{
-			lazyTree[(2*node)+1] += value;
-			lazyTree[(2*node)+2] += value;
-			segTree[node] += value;
-			return;
+	
+	if(lazyTree[node] != 0) { // This node needs to be updated
+   		segTree[node] += lazyTree[node] * ((b - a) + 1); // Update it
+
+		if(a != b) {
+			lazyTree[(2*node)+1] += lazyTree[node]; // Mark child as lazy
+    		lazyTree[(2*node) + 2] += lazyTree[node]; // Mark child as lazy
 		}
-		else
-		{
-			segTree[node] += lazyTree[node];
-			lazyTree[node] = 0;
-			long long right=0, left=0;
-			right = (a + b) / 2;
-			left = right + 1;
-			updateTree((2*node)+1, a, right, i, j, value, segTree, lazyTree);
-			updateTree((2*node)+2, left, b, i, j, value, segTree, lazyTree);
-			segTree[node] = segTree[(2*node) + 1] + segTree[(2*node) + 2];
-		}
-	}
-	else if(i > b || j < a)
+
+   		lazyTree[node] = 0; // Reset it
+  	}
+	if(i > b || j < a)
 	{
 		return;
 	}
-	else if( a == b)
-	{
-		segTree[node] += value;
-		return;
+	if(a >= i && b <= j) { // Segment is fully within range
+    		segTree[node] += value * (b-a+1);
+
+		if(a != b) { // Not leaf node
+			lazyTree[2*node + 1] += value;
+			lazyTree[2*node + 2] += value;
+		}
+
+    		return;
 	}
 	long long right=0, left=0;
 	right = (a + b) / 2;
@@ -51,19 +46,26 @@ long long queryTree(long long node, long long a, long long b, long long i, long 
 	{
 		return 0;
 	}
-	else if((a == i && b == j) || (a == b))
+	if(lazyTree[node] != 0) { // This node needs to be updated
+   		segTree[node] += lazyTree[node] * ((b - a) + 1); // Update it
+
+		if(a != b) {
+			lazyTree[(2*node)+1] += lazyTree[node]; // Mark child as lazy
+    		lazyTree[(2*node) + 2] += lazyTree[node]; // Mark child as lazy
+		}
+
+   		lazyTree[node] = 0; // Reset it
+  	}
+	if((a >= i && b <= j))
 	{
 		return segTree[node];
-	}
-	else	
-	{
-		long long right=0, left=0;
-		right = (a + b) / 2;
-		left = right + 1;
-		long long q1 = queryTree((2*node)+1, a, right, i, j, segTree, lazyTree);
-		long long q2 = queryTree((2*node)+2, left, b, i, j, segTree, lazyTree);
-		return (q1 + q2); 
-	}
+	}	
+	long long right=0, left=0;
+	right = (a + b) / 2;
+	left = right + 1;
+	long long q1 = queryTree((2*node)+1, a, right, i, j, segTree, lazyTree);
+	long long q2 = queryTree((2*node)+2, left, b, i, j, segTree, lazyTree);
+	return (q1 + q2); 
 }
 
 
